@@ -1,0 +1,52 @@
+* {
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+
+.main-title {
+    text-align: center;
+    font-size: 30px;
+    margin-top: 20px;
+}
+
+.grid-container {
+    display: flex;
+    margin-top: 50px;
+    justify-content: center;
+}
+
+#ttt-grid {
+    display: grid;
+    grid-template-columns: 6rem 6rem 6rem;
+    gap: 10px;
+}
+
+#ttt-grid > div {
+    background-color:rgb(224, 224, 224);
+    height: 6rem;
+    border: solid grey;
+    font-size: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-result {
+    margin-top: 6.5vh;
+    text-align: center;
+    font-size: 35px;
+}
+
+#btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 4vh;
+}
+
+#reset-button {
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    display: flex;
+    padding: 15px;
+    border-radius: 50px;
+}
