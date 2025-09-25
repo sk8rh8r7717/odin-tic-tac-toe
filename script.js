@@ -1,64 +1,66 @@
-let gameboard = (function() {
-    let gameboardArray = [[null, null, null], [null, null, null], [null, null, null]]
-    function writeGameboardArray(sign, coordinates) {
-        gameboardArray[coordinates[1]][coordinates[0]] = sign
+class gameBoard {
+    gameboardArray = [[null, null, null], [null, null, null], [null, null, null]];
+    
+    constructor() {
+
+    }
+    
+    writeGameboardArray(sign, coordinates) {
+        this.gameboardArray[coordinates[1]][coordinates[0]] = sign;
     }
 
-    function getGameboardArray() {
-        return JSON.parse(JSON.stringify(gameboardArray))
+    getGameboardArray() {
+        return JSON.parse(JSON.stringify(this.gameboardArray));
     }
 
-    function checkIfEmpty(coordinates) {
-        if (gameboardArray[coordinates[1]][coordinates[0]] == null) {
-            return true
+    checkIfEmpty(coordinates) {
+        if (this.gameboardArray[coordinates[1]][coordinates[0]] == null) {
+            return true;
         }
         else {
-            return false
-        }
-    }
-    function resetGameBoard() {
-        gameboardArray = [[null, null, null], [null, null, null], [null, null, null]]
-    }
-    return {getGameboardArray, writeGameboardArray, checkIfEmpty, resetGameBoard}
-})();
-
-
-
-
-function Player(playerSign) {    
-    const sign = playerSign
-    function chooseMove(coordinates) {
-        if (gameboard.checkIfEmpty(coordinates)) {
-            gameboard.writeGameboardArray(sign, coordinates)
-            return 0
-        }
-        else {
-            return 420
+            return false;
         }
     }
 
-    return {chooseMove}
+    resetGameBoard() {
+        this.gameboardArray = [[null, null, null], [null, null, null], [null, null, null]];
+    }
 }
 
-let game = (function() {
-    
-    let numMoves = 0
-    let xPlayer = Player('X')
-    let oPlayer = Player('O')
-    let gameWinner = false
-
-    function resetGame() {
-        gameboard.resetGameBoard()
-        oPlayer = Player('O')
-        xPlayer = Player('X')
-        gameWinner = false
-        numMoves = 0
+class Player {
+    constructor(playerSign) {
+        this.sign = playerSign
     }
 
-    function checkIfGameOver() {
+    chooseMove(coordinates) {
+        if (gameboard.checkIfEmpty(coordinates)) {
+            gameboard.writeGameboardArray(this.sign, coordinates)
+            return 0;
+        }
+        else {
+            return 420;
+        }
+    }
+}
+
+class Game {
+    numMoves = 0
+    xPlayer = new Player('X')
+    oPlayer = new Player('O')
+    gameWinner = false
+
+    resetGame() {
+        gameboard.resetGameBoard()
+        this.oPlayer = new Player('O')
+        this.xPlayer = new Player('X')
+        this.gameWinner = false
+        this.numMoves = 0
+    }
+
+    checkIfGameOver() {
         const gameboardArrayClone = gameboard.getGameboardArray()
         //check if game won by X
-        if (gameWinner == false){
+        if (this.gameWinner == false){
             
             if (
                 //Check for horizontal cases
@@ -76,7 +78,7 @@ let game = (function() {
                 (gameboardArrayClone[0][2] == 'X' && gameboardArrayClone[1][1] == 'X' && gameboardArrayClone[2][0] == 'X')
             ) 
             {
-                gameWinner = 'X'
+                this.gameWinner = 'X'
             }
 
             //Check if game won by O
@@ -96,36 +98,40 @@ let game = (function() {
                 (gameboardArrayClone[0][2] == 'O' && gameboardArrayClone[1][1] == 'O' && gameboardArrayClone[2][0] == 'O')
             )
             {
-                gameWinner = 'O'
+                this.gameWinner = 'O'
             }
 
-            else if (numMoves == 9) {
-                gameWinner = 'Draw'
+            else if (this.numMoves == 9) {
+                this.gameWinner = 'Draw'
             }
         }
-        return gameWinner
+        return this.gameWinner
         
     }
         
 
-    function gameMove(coordinate) {
+    gameMove(coordinate) {
         let moveResult = 0
 
-        if (numMoves%2 == 0) {     //Player 1 move
-            moveResult = xPlayer.chooseMove(coordinate)
+        if (this.numMoves%2 == 0) {     //Player 1 move
+            moveResult = this.xPlayer.chooseMove(coordinate)
             console.log(gameboard.getGameboardArray())
         }
         else {                  //Player 2 move
-            moveResult = oPlayer.chooseMove(coordinate)
+            moveResult = this.oPlayer.chooseMove(coordinate)
             console.log(gameboard.getGameboardArray())
         }
         if (moveResult == 0) {
-            numMoves++;
+            this.numMoves++;
         }
     }
 
-    return {resetGame, gameMove, checkIfGameOver}
-})();
+}
+
+
+
+const game = new Game;
+const gameboard = new gameBoard;
 
 //DOM stuff
 const grid = document.querySelector("#ttt-grid")
